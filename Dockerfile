@@ -39,7 +39,7 @@ RUN chmod -R 755 /etc/nginx/html/forms
 RUN ls -la /usr/share/nginx/html/forms
 RUN ls -la /etc/nginx/html
 RUN ls -la /etc/nginx/html/forms
-
+#RUN ln -sf /dev/stdout /var/log/nginx/access.log && ln -sf /dev/stderr /var/log/nginx/error.log
 EXPOSE 80 443
 
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
