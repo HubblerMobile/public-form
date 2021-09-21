@@ -25,9 +25,6 @@ RUN ls -la /etc/nginx
 RUN rm -rf /usr/share/nginx/html/*
 
 # Copy from the stahg 1
-COPY --from=ui-build /usr/src/app/forms/build/ /var/www/html/forms
-
-
 COPY --from=ui-build /usr/src/app/forms/build /usr/share/nginx/html/forms
 COPY --from=ui-build /usr/src/app/forms/build /etc/nginx/html
 COPY --from=ui-build /usr/src/app/forms/build /etc/nginx/html/forms
