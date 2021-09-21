@@ -19,12 +19,26 @@ COPY ./.nginx/forms.conf /etc/nginx/conf.d/forms.conf
 COPY ./.nginx/ssl/www.eiris.in.crt /etc/nginx/www.eiris.in.crt
 COPY ./.nginx/ssl/www.eiris.in.key /etc/nginx/www.eiris.in.key
 
+RUN ls -la /etc/nginx
 
 ## Remove default nginx index page
 RUN rm -rf /usr/share/nginx/html/*
 
 # Copy from the stahg 1
 COPY --from=ui-build /usr/src/app/forms/build/ /var/www/html/forms
+
+
+COPY --from=ui-build /usr/src/app/forms/build /usr/share/nginx/html/forms
+COPY --from=ui-build /usr/src/app/forms/build /etc/nginx/html
+COPY --from=ui-build /usr/src/app/forms/build /etc/nginx/html/forms
+
+RUN chmod -R 755 /usr/share/nginx/html/forms
+RUN chmod -R 755 /etc/nginx/html
+RUN chmod -R 755 /etc/nginx/html/forms
+
+RUN ls -la /usr/share/nginx/html/forms
+RUN ls -la /etc/nginx/html
+RUN ls -la /etc/nginx/html/forms
 
 EXPOSE 80 443
 
