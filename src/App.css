@@ -36,3 +36,6 @@
     transform: rotate(360deg);
   }
 }
+.vendor-modal{
+  width: 80%!important;
+}
