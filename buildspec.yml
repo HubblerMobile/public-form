@@ -8,7 +8,7 @@ phases:
     commands:
       - echo Logging in to Amazon ECR...
       - aws --version
-      - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+      - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email | docker login --username AWS --password-stdin 277474188442.dkr.ecr.ap-southeast-1.amazonaws.com)
       - REPOSITORY_URI=277474188442.dkr.ecr.ap-southeast-1.amazonaws.com/public-forms
       - IMAGE_TAG=latest
   build:
