@@ -18,7 +18,7 @@
   "scripts": {
     "start": "HTTPS=true react-scripts start --no-cache",
     "build": "react-scripts build",
-    "sandbox-build": "react-scripts build && mv build console",
+    "sandbox-build": "react-scripts build && mv build forms",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
