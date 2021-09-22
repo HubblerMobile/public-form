@@ -1,0 +1,77 @@
+.address_data_input_fields {
+  display: flex;
+  flex-wrap: wrap;
+  border: 0;
+  justify-content: space-between;
+
+  .single_addressField {
+    width: calc(100% / 2 - 5px);
+    flex-shrink: 0;
+    margin: 0 0 10px;
+
+  }
+
+  .multiple_addressField {
+    width: calc(50% - 5px);
+    flex-shrink: 0;
+
+    .addressFields_state {
+      width: calc(100% / 2);
+    }
+  }
+
+  .multiple_addressField {
+    //display: flex;
+    //justify-content: space-between;
+
+    .addressFields_state, .addressFields_postal_code {
+      width: 46%;
+    }
+
+    .addressFields_postal_code {
+      margin-left: 10px;
+    }
+  }
+}
+
+
+.vendor-modal {
+  .title-wrap {
+    display: flex;
+    width: 100%;
+
+    .title-parent {
+      width: 100%;
+      display: flex;
+
+      span {
+        margin: auto;
+        font-size: 20px;
+      }
+    }
+  }
+
+  .ant-modal-header {
+    display: flex;
+
+    .ant-modal-title {
+      width: 100%;
+    }
+
+
+  }
+
+  .hubbler-logo {
+    background-image: url("../../images/hubbler-logo-text.png");
+    width: 70px;
+    background-size: contain;
+    height: 70px;
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: -5px;
+
+  }
+
+}
+
