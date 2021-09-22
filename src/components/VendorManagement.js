@@ -1,15 +1,16 @@
-import React, {Component} from 'react'
-import {Modal, Button, Form} from 'antd';
+import React, {useState} from 'react'
+import {Modal, Button, Form,message} from 'antd';
 import VendorForm from './VendorForm/VendorForm'
 import axios from "axios"
 
 
 const VendorManagement = () => {
     const [form] = Form.useForm();
+    const [submitLoader, setSubmitLoader] = useState(false)
 
 
     const onCreate = (values) => {
-
+        setSubmitLoader(true)
         let data = {
             "57697ca3f955d303e826afdfce262d5f": "",
             "222039a16fc1018fccd2fdd057ce1803": values.first_name,
@@ -42,6 +43,13 @@ const VendorManagement = () => {
 
         axios.post("https://console.hubblerapp.com/integrations/workflow/incoming-hook/?key=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2NvdW50IjoiNTViNzljYzI4NzJlZjg3YzE4MjRmMGI2IiwiYXBwIjoiNjEyODg0OWFlZDZiNmFjYmE0YmQ2NzQxIiwiY29uZmlnX2lkIjoiNjEyODliMDgxNmY2Zjk3M2Y3MzRiZGYzIiwiYXBwX2NvZGUiOiIifQ.vyzuOubIu1cXeXs3qxS01YMZ_7p2aQ3C9SYf2iikxiY"
             , data ).then((response)=>{
+                let result = response.data.result
+                if(result && !result.invalid){
+                    message.success(result.message ||'Successfully posted')
+                }else{
+                    message.error(result.error)
+                }
+            setSubmitLoader(false)
             console.log(response)
 
         })
@@ -73,7 +81,7 @@ const VendorManagement = () => {
                 <Button key="back" onClick={handleCancel}>
                     Cancel
                 </Button>,
-                <Button key="submit" type="primary" loading={false} onClick={handleOk}>
+                <Button key="submit" type="primary" loading={submitLoader} onClick={handleOk}>
                     Submit
                 </Button>]} title={<div className={'title-wrap'} >
                 <div className={'hubbler-logo'}></div>
