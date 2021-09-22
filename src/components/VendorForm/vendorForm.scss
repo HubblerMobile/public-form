@@ -62,11 +62,15 @@
   }
 
   .hubbler-logo {
-    background-image: url("../../images/hubbler-logo-original.png");
-    width: 30px;
+    background-image: url("../../images/hubbler-logo-text.png");
+    width: 70px;
     background-size: contain;
-    height: 30px;
+    height: 70px;
     border-radius: 50%;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: -5px;
+
   }
 
 }
