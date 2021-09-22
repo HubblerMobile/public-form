@@ -1,4 +1,4 @@
-FROM node:16.8.0-alpine3.11 AS ui-build
+FROM public.ecr.aws/a8d2h0z7/node-1680-alpine311:latest AS ui-build
 RUN apk add g++ make python
 
 ENV NPM_CONFIG_LOGLEVEL warn
