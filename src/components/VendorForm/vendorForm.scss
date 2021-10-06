@@ -34,8 +34,18 @@
   }
 }
 
+.ant-modal-mask{
+  background-color: transparent;
 
+}
 .vendor-modal {
+  top: 40px;
+  .ant-modal-content{
+    box-shadow: none;
+  }
+  .ant-modal-close-x{
+    display: none;
+  }
   .title-wrap {
     display: flex;
     width: 100%;

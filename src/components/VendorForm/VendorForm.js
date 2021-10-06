@@ -11,82 +11,8 @@ const {Option} = Select;
 let addressFieldData = [{id: "street", lbl: "Street"}, {id: "locality", lbl: "Locality"}, {
     id: "city",
     lbl: "City"
-}, {id: "district", lbl: "District"}, {id: "state", lbl: "State"}, {id: "country", lbl: "Country"}]
+}, {id: "district", lbl: "District"}, {id: "state", lbl: "State"}, {id: "country", lbl: "Country"},]
 
-const residences = [
-    {
-        value: 'zhejiang',
-        label: 'Zhejiang',
-        children: [
-            {
-                value: 'hangzhou',
-                label: 'Hangzhou',
-                children: [
-                    {
-                        value: 'xihu',
-                        label: 'West Lake',
-                    },
-                ],
-            },
-        ],
-    },
-    {
-        value: 'jiangsu',
-        label: 'Jiangsu',
-        children: [
-            {
-                value: 'nanjing',
-                label: 'Nanjing',
-                children: [
-                    {
-                        value: 'zhonghuamen',
-                        label: 'Zhong Hua Men',
-                    },
-                ],
-            },
-        ],
-    },
-];
-const formItemLayout = {
-    labelCol: {
-        xs: {
-            span: 24,
-        },
-        sm: {
-            span: 8,
-        },
-    },
-    wrapperCol: {
-        xs: {
-            span: 24,
-        },
-        sm: {
-            span: 16,
-        },
-    },
-};
-
-const normFile = (e) => {
-    debugger
-    // console.log('Upload event:', e);
-    // if (Array.isArray(e)) {
-    //     return e;
-    // }
-    // return e && e.fileList;
-};
-
-const tailFormItemLayout = {
-    wrapperCol: {
-        xs: {
-            span: 24,
-            offset: 0,
-        },
-        sm: {
-            span: 16,
-            offset: 8,
-        },
-    },
-};
 
 const panCardValidation = (text) => {
 
@@ -99,176 +25,219 @@ const panCardValidation = (text) => {
 
 
 const VendorForm = (props) => {
-    const [fileList, setPanFileList] = useState([])
-    const [gstinFileList, setGstinFileList] = useState([])
-    const [chequeFileList, setChequeFileList] = useState([])
+    // const [fileList, setPanFileList] = useState([])
+    // const [gstinFileList, setGstinFileList] = useState([])
+    // const [chequeFileList, setChequeFileList] = useState([])
+
+
+    const [street, setStreet] = useState()
+    const [locality, setLocality] = useState()
+    const [city, setCity] = useState()
+    const [district, setDistrict] = useState()
+    const [state, setState] = useState()
+    const [country, setCountry] = useState()
+    const [pin_code, setPinCode] = useState()
 
     let apiUrl = 'https://sandconsole.hubblerapp.com/hubbler/web/form-media/'
 
 
+    const onChangeOfAddressDataInput = async (inputValue, fieldId) => {
+        switch (fieldId) {
+            case 'street':
+                await setStreet(inputValue)
+                break;
+            case 'locality':
+                await setLocality(inputValue)
+                break;
+            case 'city':
+                await setCity(inputValue)
+                break;
+            case 'district':
+                await setDistrict(inputValue)
+                break;
+            case 'country':
+                await setCountry(inputValue)
+                break;
+            case 'state':
+                await setState(inputValue)
+                break;
+            case 'pin_code':
+                await setPinCode(inputValue)
+                break;
+            default:
+                setStreet(inputValue)
+
+        }
+        console.log(street, locality, city, district, state, pin_code, country)
+        props.setAddress({street, locality, city, district,state, pin_code, country})
+    }
+
     const onFinish = (values) => {
+        //Strret, Loca, City, District, starte, 99, Country
         props.onFinish(values)
     };
 
-    const setPanList = (file) => {
-        setPanFileList((oldData) => [...oldData, {
-            uid: file.uid,
-            name: file.name,
-            status: 'uploading'
-
-        }])
-    }
-
-    const setGstinList = (file) => {
-        setGstinFileList((oldData) => [...oldData, {
-            uid: file.uid,
-            name: file.name,
-            status: 'uploading'
-
-        }])
-    }
-    const setChequeList = (file) => {
-        setChequeFileList((oldData) => [...oldData, {
-            uid: file.uid,
-            name: file.name,
-            status: 'uploading'
-
-        }])
-    }
-
-    const fileListPan = (finalData) => {
-        setPanFileList((oldData) => oldData.map(item => {
-            if (item.uid === finalData.uid) {
-                return {...item, ...finalData}
-            } else {
-                return item
-            }
-        }))
-    }
-    const fileListGstin = (finalData) => {
-        setGstinFileList((oldData) => oldData.map(item => {
-            if (item.uid === finalData.uid) {
-                return {...item, ...finalData}
-            } else {
-                return item
-            }
-        }))
-    }
-    const fileListCheque = (finalData) => {
-        setChequeFileList((oldData) => oldData.map(item => {
-            if (item.uid === finalData.uid) {
-                return {...item, ...finalData}
-            } else {
-                return item
-            }
-        }))
-    }
-
-    const fileListElsePan = (file) =>{
-        setPanFileList((oldData) => oldData.map(item => {
-            if (item.uid !== file.uid) {
-                return item
-            }
-        }))
-    }
-    const fileListElseGstin = (file) =>{
-        setGstinFileList((oldData) => oldData.map(item => {
-            if (item.uid !== file.uid) {
-                return item
-            }
-        }))
-    }
-    const fileListElseCheque = (file) =>{
-        setChequeFileList((oldData) => oldData.map(item => {
-            if (item.uid !== file.uid) {
-                return item
-            }
-        }))
-    }
-
-
-    const customRequest = useCallback(async ({file}, type) => {
-        if (type === 'pan') {
-            setPanList(file)
-        } else if (type === 'gstin') {
-            setGstinList(file)
-        } else {
-            setChequeList(file)
-        }
-
-        let url = apiUrl
-        if (apiUrl) {
-            let fileType = file.type.split('/')
-            if (fileType[0] === 'image') {
-                url += `image/`
-            } else {
-                url += `file/`
-            }
-        }
-        let formData = new FormData();
-        formData.append(file.name, file)
-        const upLoadFile = await axiosApiCallCommonMethod("post", url || "/profile-picture/", formData, true)
-        if (upLoadFile) {
-            const finalData = {
-                uid: file.uid,
-                name: file.name,
-                status: 'done',
-                url: upLoadFile.result[0].filepath,
-                original: upLoadFile.result[0].filepath,
-                originalObj: upLoadFile.result[0]
-            }
-
-            if (type === 'pan') {
-                fileListPan(finalData)
-            } else if (type === 'gstin') {
-                fileListGstin(finalData)
-            } else {
-                fileListCheque(finalData)
-            }
-
-        } else {
-            if (type === 'pan') {
-                fileListElsePan(file)
-            } else if (type === 'gstin') {
-                fileListElseGstin(file)
-            } else {
-                fileListElseCheque(file)
-            }
-
-        }
-    }, [apiUrl])
-
-    const removePan = (filelistValue) =>{
-        setPanFileList([...filelistValue])
-    }
-    const removeGstin = (filelistValue) =>{
-        setGstinFileList([...filelistValue])
-    }
-    const removeCheque = (filelistValue) =>{
-        setChequeFileList([...filelistValue])
-
-    }
-
-    const onRemove = useCallback((file, type) => {
-        let filelistValue = fileList
-        if(type === 'pan'){
-            filelistValue = fileList
-        }else if(type === 'gstin'){
-            filelistValue = gstinFileList
-        }else{
-            filelistValue = chequeFileList
-        }
-        const index = filelistValue.findIndex(data => data === file.uid)
-        filelistValue.splice(index, 1);
-        if (type === 'pan') {
-            removePan(filelistValue)
-        } else if (type === 'gstin') {
-            removeGstin(filelistValue)
-        } else {
-            removeCheque(filelistValue)
-        }
-
-    }, [gstinFileList,fileList,chequeFileList])
+    // const setPanList = async (file) => {
+    //     await setPanFileList((oldData) => [...oldData, {
+    //         uid: file.uid,
+    //         name: file.name,
+    //         status: 'uploading'
+    //
+    //     }])
+    // }
+    //
+    // const setGstinList = (file) => {
+    //     setGstinFileList((oldData) => [...oldData, {
+    //         uid: file.uid,
+    //         name: file.name,
+    //         status: 'uploading'
+    //
+    //     }])
+    //
+    // }
+    // const setChequeList = (file) => {
+    //     setChequeFileList((oldData) => [...oldData, {
+    //         uid: file.uid,
+    //         name: file.name,
+    //         status: 'uploading'
+    //
+    //     }])
+    //
+    // }
+    //
+    // const fileListPan = (finalData) => {
+    //     setPanFileList((oldData) => oldData.map(item => {
+    //         if (item.uid === finalData.uid) {
+    //             return {...item, ...finalData}
+    //         } else {
+    //             return item
+    //         }
+    //     }))
+    // }
+    // const fileListGstin = (finalData) => {
+    //     setGstinFileList((oldData) => oldData.map(item => {
+    //         if (item.uid === finalData.uid) {
+    //             return {...item, ...finalData}
+    //         } else {
+    //             return item
+    //         }
+    //     }))
+    // }
+    // const fileListCheque = (finalData) => {
+    //     setChequeFileList((oldData) => oldData.map(item => {
+    //         if (item.uid === finalData.uid) {
+    //             return {...item, ...finalData}
+    //         } else {
+    //             return item
+    //         }
+    //     }))
+    // }
+    //
+    // const fileListElsePan = (file) => {
+    //     setPanFileList((oldData) => oldData.map(item => {
+    //         if (item.uid !== file.uid) {
+    //             return item
+    //         }
+    //     }))
+    // }
+    // const fileListElseGstin = (file) => {
+    //     setGstinFileList((oldData) => oldData.map(item => {
+    //         if (item.uid !== file.uid) {
+    //             return item
+    //         }
+    //     }))
+    // }
+    // const fileListElseCheque = (file) => {
+    //     setChequeFileList((oldData) => oldData.map(item => {
+    //         if (item.uid !== file.uid) {
+    //             return item
+    //         }
+    //     }))
+    // }
+    //
+    //
+    // const customRequest = useCallback(async ({file}, type) => {
+    //     if (type === 'pan') {
+    //         setPanList(file)
+    //     } else if (type === 'gstin') {
+    //         setGstinList(file)
+    //     } else {
+    //         setChequeList(file)
+    //     }
+    //
+    //     let url = apiUrl
+    //     if (apiUrl) {
+    //         let fileType = file.type.split('/')
+    //         if (fileType[0] === 'image') {
+    //             url += `image/`
+    //         } else {
+    //             url += `file/`
+    //         }
+    //     }
+    //     let formData = new FormData();
+    //     formData.append(file.name, file)
+    //     const upLoadFile = await axiosApiCallCommonMethod("post", url || "/profile-picture/", formData, true)
+    //     if (upLoadFile) {
+    //         const finalData = {
+    //             uid: file.uid,
+    //             name: file.name,
+    //             status: 'done',
+    //             url: upLoadFile.result[0].filepath,
+    //             original: upLoadFile.result[0].filepath,
+    //             originalObj: upLoadFile.result[0]
+    //         }
+    //
+    //         if (type === 'pan') {
+    //             fileListPan(finalData)
+    //         } else if (type === 'gstin') {
+    //             fileListGstin(finalData)
+    //         } else {
+    //             fileListCheque(finalData)
+    //         }
+    //
+    //     } else {
+    //         if (type === 'pan') {
+    //             fileListElsePan(file)
+    //         } else if (type === 'gstin') {
+    //             fileListElseGstin(file)
+    //         } else {
+    //             fileListElseCheque(file)
+    //         }
+    //
+    //     }
+    // }, [apiUrl])
+    //
+    // const removePan = (filelistValue) => {
+    //     setPanFileList([...filelistValue])
+    // }
+    // const removeGstin = (filelistValue) => {
+    //     setGstinFileList([...filelistValue])
+    // }
+    // const removeCheque = (filelistValue) => {
+    //     setChequeFileList([...filelistValue])
+    //
+    // }
+    //
+    // const onRemove = useCallback((file, type) => {
+    //     let filelistValue = fileList
+    //     if (type === 'pan') {
+    //         filelistValue = fileList
+    //     } else if (type === 'gstin') {
+    //         filelistValue = gstinFileList
+    //     } else {
+    //         filelistValue = chequeFileList
+    //     }
+    //     const index = filelistValue.findIndex(data => data === file.uid)
+    //     filelistValue.splice(index, 1);
+    //     if (type === 'pan') {
+    //         removePan(filelistValue)
+    //     } else if (type === 'gstin') {
+    //         removeGstin(filelistValue)
+    //     } else {
+    //         removeCheque(filelistValue)
+    //     }
+    //
+    // }, [gstinFileList, fileList, chequeFileList])
 
 
     // const onPreview = useCallback(async file => {
@@ -321,6 +290,7 @@ const VendorForm = (props) => {
             }}
             scrollToFirstError
 
+
         >
             <Form.Item
                 name="owner_category"
@@ -341,11 +311,11 @@ const VendorForm = (props) => {
 
             <Form.Item
                 name="first_name"
-                label="First Name"
+                label="Name"
                 rules={[
                     {
                         required: true,
-                        message: 'Please input your first name!',
+                        message: 'Please input your name!',
                         whitespace: true,
                     },
                 ]}
@@ -364,6 +334,9 @@ const VendorForm = (props) => {
                                 <div key={`${singleField.id}AddressData`} className="single_addressField">
                                     <Input className={`addressFields_${singleField.id}`}
                                            placeholder={`Enter ${singleField.lbl}`}
+                                           name={addressFieldData.lbl}
+                                           onChange={(e) => onChangeOfAddressDataInput(e.target.value, singleField.id)}
+
                                     />
                                 </div>
 
@@ -372,9 +345,11 @@ const VendorForm = (props) => {
                                      className={`multiple_addressField`}>
                                     <Input className={`addressFields_${singleField.id}`}
                                            placeholder={`Enter ${singleField.lbl}`}
+                                           onChange={(e) => onChangeOfAddressDataInput(e.target.value, singleField.id)}
                                     />
                                     <InputNumber className={`addressFields_postal_code`}
-                                                 placeholder={`Enter Pincode`}/>
+                                                 placeholder={`Enter Pincode`}
+                                                 onChange={(e) => onChangeOfAddressDataInput(e, "pin_code")}/>
 
                                 </div>
                         )
@@ -474,16 +449,16 @@ const VendorForm = (props) => {
                 //     },
                 // ]}
             >
-                <Upload name="upload_pan" listType="picture-card" fileList={fileList}
-                        customRequest={(f) => customRequest(f, 'pan')}
+                <Upload name="upload_pan" listType="picture" fileList={props.fileList}
+                        customRequest={(f) => props.customRequest(f, 'pan')}
                         action='/image/'
-                        onRemove={(f) => onRemove(f,"pan")}
+                        onRemove={(f) => props.onRemove(f, "pan")}
                 >
-                    {/*<Button icon={<UploadOutlined />}>Click to upload</Button>*/}
-                    <div>
+                    <Button icon={<UploadOutlined />}>Click to upload</Button>
+                    {/*<div>
                         <PlusOutlined/>
                         <div style={{marginTop: 8}}>Upload</div>
-                    </div>
+                    </div>*/}
 
                 </Upload>
             </Form.Item>
@@ -527,10 +502,10 @@ const VendorForm = (props) => {
                 //     },
                 // ]}
             >
-                <Upload name="gstin" listType="picture" fileList={gstinFileList}
-                        customRequest={(f) => customRequest(f, 'gstin')}
+                <Upload name="gstin" listType="picture" fileList={props.gstinFileList}
+                        customRequest={(f) => props.customRequest(f, 'gstin')}
                         action='/image/'
-                        onRemove={(f) => onRemove(f,"gstin")}>
+                        onRemove={(f) => props.onRemove(f, "gstin")}>
                     <Button icon={<UploadOutlined/>}>Click to upload</Button>
                 </Upload>
             </Form.Item>
@@ -603,10 +578,10 @@ const VendorForm = (props) => {
                 //     },
                 // ]}
             >
-                <Upload name="cancel_cheque_upload" listType="picture" fileList={chequeFileList}
-                        customRequest={(f) => customRequest(f, 'cheque')}
+                <Upload name="cancel_cheque_upload" listType="picture" fileList={props.chequeFileList}
+                        customRequest={(f) => props.customRequest(f, 'cheque')}
                         action='/image/'
-                        onRemove={(f) => onRemove(f,'cheque')}>
+                        onRemove={(f) => props.onRemove(f, 'cheque')}>
                     <Button icon={<UploadOutlined/>}>Click to upload</Button>
                 </Upload>
             </Form.Item>
