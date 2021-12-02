@@ -1,0 +1,72 @@
+.address_data_input_fields {
+  display: flex;
+  flex-wrap: wrap;
+  border: 0;
+  justify-content: space-between;
+}
+.address_data_input_fields .single_addressField {
+  width: calc(100% / 2 - 5px);
+  flex-shrink: 0;
+  margin: 0 0 10px;
+}
+.address_data_input_fields .multiple_addressField {
+  width: calc(50% - 5px);
+  flex-shrink: 0;
+}
+.address_data_input_fields .multiple_addressField .addressFields_state {
+  width: calc(100% / 2);
+}
+.address_data_input_fields .multiple_addressField .addressFields_state, .address_data_input_fields .multiple_addressField .addressFields_postal_code {
+  width: 46%;
+}
+.address_data_input_fields .multiple_addressField .addressFields_postal_code {
+  margin-left: 10px;
+}
+
+.ant-modal-mask {
+  background-color: transparent;
+}
+
+.ant-picker {
+  width: 100%;
+}
+
+.vendor-modal {
+  top: 40px;
+}
+.vendor-modal .ant-modal-content {
+  box-shadow: none;
+}
+.vendor-modal .ant-modal-close-x {
+  display: none;
+}
+.vendor-modal .title-wrap {
+  display: flex;
+  width: 100%;
+}
+.vendor-modal .title-wrap .title-parent {
+  width: 100%;
+  display: flex;
+}
+.vendor-modal .title-wrap .title-parent span {
+  margin: auto;
+  font-size: 20px;
+}
+.vendor-modal .ant-modal-header {
+  display: flex;
+}
+.vendor-modal .ant-modal-header .ant-modal-title {
+  width: 100%;
+}
+.vendor-modal .hubbler-logo {
+  background-image: url("../../images/hubbler-logo-text.png");
+  width: 70px;
+  background-size: contain;
+  height: 70px;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: -5px;
+}
+
+/*# sourceMappingURL=trainingFeedbackForm.css.map */
